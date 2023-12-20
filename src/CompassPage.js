@@ -5,10 +5,10 @@ export function CompassPage() {
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    navigator.vibrate(500);
     window.addEventListener("deviceorientation", (event) => {
       setDegrees(event.alpha);
       if (event.alpha >= 20 && event.alpha <= 21) {
-        navigator.vibrate(500);
       }
     });
     navigator.permissions.query({ name: "geolocation" });
