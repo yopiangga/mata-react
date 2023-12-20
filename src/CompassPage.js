@@ -17,6 +17,45 @@ export function CompassPage() {
       setLocation(position);
     });
   }, []);
+
+  const [transcript, setTranscript] = useState("");
+  const [listening, setListening] = useState(false);
+
+  const startListening = () => {
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
+
+    recognition.lang = "en-US";
+    recognition.onstart = () => {
+      setListening(true);
+      console.log("Speech recognition started");
+    };
+
+    recognition.onresult = (event) => {
+      const last = event.results.length - 1;
+      const text = event.results[last][0].transcript;
+      setTranscript(text);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+      console.log("Speech recognition ended");
+    };
+
+    recognition.onerror = (error) => {
+      setListening(false);
+      console.error("Speech recognition error:", error);
+    };
+
+    recognition.start();
+  };
+
+  const stopListening = () => {
+    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+      window.speechRecognition.stop();
+    }
+  };
+
   return (
     <div>
       <h1 style={{ color: "black" }}>Compass</h1>
@@ -30,6 +69,16 @@ export function CompassPage() {
       >
         Vibrate
       </button>
+
+      <div>
+        <button onClick={startListening} disabled={listening}>
+          Start Listening
+        </button>
+        <button onClick={stopListening} disabled={!listening}>
+          Stop Listening
+        </button>
+        <p>Transcript: {transcript}</p>
+      </div>
     </div>
   );
 }
