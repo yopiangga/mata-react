@@ -58,7 +58,8 @@ export function CompassPage() {
 
   return (
     <div>
-      <h1 style={{ color: "black" }}>Compass</h1>
+      <h1 style={{ color: "black" }}>Compass App</h1>
+      <p>Demo SSL for support access hardware with modern browser. @alfian-py</p>
       <p>{degrees ?? "-"}</p>
       <p>{location?.coords.latitude ?? "-"}</p>
 
